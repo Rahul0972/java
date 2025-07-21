@@ -70,7 +70,8 @@ multiplayer-dice-game
 - Use "Restart" to play again or "Exit" to quit.
 
 ## 🖼️ Screenshots
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b156e360-b46b-493c-8cf9-509a4135c09c" />
+<img width="753" height="546" alt="image" src="https://github.com/user-attachments/assets/07eca6fa-a9fd-4fe2-9311-8466484f69a4" />
+
 
 
 
