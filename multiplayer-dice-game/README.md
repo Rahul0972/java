@@ -1,4 +1,3 @@
-
 # 🎲 Multiplayer Dice Game
 
 An interactive Java Swing game for 2 to 5 players. Each player takes turns rolling a dice, and the player(s) with the highest roll wins! The game features a modern UI, custom backgrounds, and easy controls.
@@ -73,3 +72,7 @@ Add your screenshots here!
 
 ## 📄 License
 This project is open-source and available for modification and distribution. Enjoy the game!
+
+---
+
+import gui.NetworkLobby;
