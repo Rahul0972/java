@@ -1,5 +1,3 @@
-
-
 # 🎲 Multiplayer Dice Game
 
 An interactive Java Swing game for 2 to 5 players. Each player takes turns rolling a dice, and the player(s) with the highest roll wins! The game features a modern UI, custom backgrounds, and easy controls.
@@ -7,11 +5,13 @@ An interactive Java Swing game for 2 to 5 players. Each player takes turns rolli
 ---
 
 ## ✨ Features
-- Supports 2 to 5 players
-- Enter custom player names
+- Local and Online multiplayer modes (host/join with code)
+- Single window experience (no popups or extra frames)
+- Menu bar to switch between local and online game modes
+- Custom player names and winner display
 - Modern, colorful UI with background image
 - Dice images and smooth roll animation
-- Winner and draw detection
+- Custom-styled dialogs and prompts
 - Restart and exit buttons
 - No external dependencies (pure Java/Swing)
 
@@ -55,25 +55,30 @@ multiplayer-dice-game
    - Place `background.jpg` (or `background.png`) and `dice1.png` to `dice6.png` in the `resources` folder.
 3. **Compile the code:**
    ```sh
-   javac -cp src src/Main.java src/gui/GameWindow.java src/game/Dice.java src/game/Player.java src/game/GameLogic.java src/utils/Constants.java
+   cd src
+   javac gui/Main.java gui/GameWindow.java gui/NetworkLobby.java game/Dice.java game/Player.java game/GameLogic.java utils/Constants.java
    ```
 4. **Run the game:**
    ```sh
-   java -cp src:resources Main
+   java gui.Main
    ```
-   *(On Windows, use `;` instead of `:` for the classpath)*
+   *(On Windows, use `;` instead of `:` for the classpath, and run from the `src` folder)*
 
 ## 🕹️ How to Play
-- Enter the number of players (2-5) and their names.
-- Each player clicks "Roll Dice" on their turn.
-- The result and winner (or draw) are displayed at the end.
-- Use "Restart" to play again or "Exit" to quit.
+- **Local Game:**
+  - Enter the number of players (2-5) and their names.
+  - Each player clicks "Roll Dice" on their turn.
+  - The result and winner (or draw) are displayed at the end.
+  - Use "Restart" to play again or "Exit" to quit.
+- **Online Game:**
+  - Host: Click "Host Game" and share the code and IP with your friend.
+  - Join: Enter the code and IP to join your friend's game.
+  - Use the menu bar to switch between local and online modes at any time.
 
 ## 🖼️ Screenshots
-<img width="753" height="546" alt="image" src="https://github.com/user-attachments/assets/07eca6fa-a9fd-4fe2-9311-8466484f69a4" />
-
-
-
+Add your screenshots here!
 
 ## 📄 License
 This project is open-source and available for modification and distribution. Enjoy the game!
+
+---
