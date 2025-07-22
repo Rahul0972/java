@@ -76,7 +76,13 @@ multiplayer-dice-game
   - Use the menu bar to switch between local and online modes at any time.
 
 ## 🖼️ Screenshots
-Add your screenshots here!
+![alt text](Screenshot_20250722_130153-4.png)
+
+![alt text](Screenshot_20250722_131907.png)
+
+![alt text](Screenshot_20250722_132231.png)
+
+![alt text](Screenshot_20250722_132243.png)
 
 ## 📄 License
 This project is open-source and available for modification and distribution. Enjoy the game!
