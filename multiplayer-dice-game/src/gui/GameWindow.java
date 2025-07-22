@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.image.BufferedImage;
 
-public class GameWindow extends JFrame {
+public class GameWindow extends JPanel {
     private List<Player> players;
     private int currentPlayerIndex;
     private JLabel diceLabel;
@@ -24,12 +24,50 @@ public class GameWindow extends JFrame {
     private ImageIcon[] diceIcons;
     private ImageIcon backgroundIcon;
 
+    private JMenuBar menuBar;
     public GameWindow(List<Player> players) {
         this.players = players;
         this.currentPlayerIndex = 0;
         loadDiceImages();
         loadBackgroundImage();
+        setLayout(new BorderLayout(0, 0));
+        setOpaque(false);
         initializeUI();
+        setupMenu();
+    }
+
+    private void setupMenu() {
+        menuBar = new JMenuBar();
+        menuBar.setBackground(new Color(80, 120, 200));
+        JMenu gameMenu = new JMenu("Menu");
+        gameMenu.setFont(new Font("Montserrat", Font.BOLD, 18));
+        gameMenu.setForeground(Color.WHITE);
+        JMenuItem switchToOnline = new JMenuItem("Switch to Online Game");
+        styleMenuItem(switchToOnline);
+        switchToOnline.addActionListener(e -> {
+            // Switch to online lobby
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            if (frame != null) {
+                NetworkLobby lobby = new NetworkLobby();
+                frame.setContentPane(lobby);
+                frame.setJMenuBar(lobby.getJMenuBar());
+                frame.revalidate();
+                frame.repaint();
+            }
+        });
+        gameMenu.add(switchToOnline);
+        menuBar.add(gameMenu);
+    }
+
+    private void styleMenuItem(JMenuItem item) {
+        item.setFont(new Font("Montserrat", Font.BOLD, 18));
+        item.setBackground(new Color(0, 153, 255));
+        item.setForeground(Color.WHITE);
+        item.setOpaque(true);
+    }
+
+    public JMenuBar getJMenuBar() {
+        return menuBar;
     }
 
     // Load dice images (dice1.png to dice6.png) from resources folder
@@ -71,13 +109,10 @@ public class GameWindow extends JFrame {
     }
 
     private void initializeUI() {
-        setTitle("Dice Game");
-        setSize(600, 400);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(0, 0));
-
-        JPanel contentPanel = new JPanel() {
+        // Custom background painting
+        setOpaque(false);
+        // Top panel for player turn
+        JPanel topPanel = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -86,12 +121,6 @@ public class GameWindow extends JFrame {
                 }
             }
         };
-        contentPanel.setOpaque(false);
-        contentPanel.setLayout(new BorderLayout(0, 0));
-        setContentPane(contentPanel);
-
-        // Top panel for player turn
-        JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
         playerTurnLabel = new JLabel("Turn: " + players.get(currentPlayerIndex).getName(), SwingConstants.CENTER);
         playerTurnLabel.setFont(new Font("Segoe UI", Font.BOLD, 26));
@@ -100,7 +129,15 @@ public class GameWindow extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // Center panel for dice image and label
-        JPanel centerPanel = new JPanel(new GridBagLayout());
+        JPanel centerPanel = new JPanel(new GridBagLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (backgroundIcon != null) {
+                    g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
         centerPanel.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -128,7 +165,15 @@ public class GameWindow extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
 
         // Bottom panel for results and control buttons
-        JPanel bottomPanel = new JPanel(new BorderLayout());
+        JPanel bottomPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (backgroundIcon != null) {
+                    g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
         bottomPanel.setOpaque(false);
         resultArea = new JTextArea(4, 20) {
             @Override
@@ -156,7 +201,15 @@ public class GameWindow extends JFrame {
         resultArea.setBorder(null);
         bottomPanel.add(resultArea, BorderLayout.CENTER);
 
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 24, 8));
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 24, 8)) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (backgroundIcon != null) {
+                    g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
         buttonPanel.setOpaque(false);
         rollButton = new JButton("Roll Dice");
         styleButton(rollButton, new Color(0, 153, 255), Color.WHITE);
@@ -179,27 +232,52 @@ public class GameWindow extends JFrame {
 
         bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
         add(bottomPanel, BorderLayout.SOUTH);
-
-        setVisible(true);
     }
 
     private void styleButton(JButton button, Color bg, Color fg) {
         Font btnFont;
         try {
-            btnFont = new Font("Montserrat", Font.BOLD, 18);
+            btnFont = new Font("Montserrat", Font.BOLD, 20);
         } catch (Exception e) {
-            btnFont = new Font("Segoe UI", Font.BOLD, 18);
+            btnFont = new Font("Segoe UI", Font.BOLD, 20);
         }
         button.setFont(btnFont);
-        button.setBackground(bg);
         button.setForeground(fg);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(bg.darker(), 2, true),
-            BorderFactory.createEmptyBorder(8, 24, 8, 24)));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.setPreferredSize(new Dimension(120, 40));
+        button.setPreferredSize(new Dimension(140, 48));
+        button.setContentAreaFilled(false);
+        button.setOpaque(false);
+        button.setBorder(BorderFactory.createEmptyBorder(8, 24, 8, 24));
+        // Custom painting for rounded gradient button
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBorder(BorderFactory.createLineBorder(bg.brighter(), 3, true));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBorder(BorderFactory.createEmptyBorder(8, 24, 8, 24));
+            }
+        });
+        button.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                AbstractButton b = (AbstractButton) c;
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int w = b.getWidth(), h = b.getHeight();
+                Color grad1 = bg;
+                Color grad2 = bg.brighter();
+                GradientPaint gp = new GradientPaint(0, 0, grad1, 0, h, grad2);
+                g2.setPaint(gp);
+                g2.fillRoundRect(0, 0, w, h, 28, 28);
+                g2.setColor(bg.darker());
+                g2.drawRoundRect(0, 0, w-1, h-1, 28, 28);
+                g2.dispose();
+                super.paint(g, c);
+            }
+        });
     }
+    
 
     private class RollDiceAction implements ActionListener {
         @Override

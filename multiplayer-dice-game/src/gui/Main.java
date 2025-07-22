@@ -136,7 +136,7 @@ public class Main {
                         }
                         namePanel.setVisible(false);
                         GameWindow window = new GameWindow(players);
-                        mainFrame.setContentPane(window.getContentPane());
+                        mainFrame.setContentPane(window);
                         mainFrame.setJMenuBar(window.getJMenuBar());
                         mainFrame.revalidate();
                         mainFrame.repaint();
@@ -147,7 +147,7 @@ public class Main {
             onlineBtn.addActionListener(e -> {
                 startPanel.setVisible(false);
                 NetworkLobby lobby = new NetworkLobby();
-                mainFrame.setContentPane(lobby.getContentPane());
+                mainFrame.setContentPane(lobby);
                 mainFrame.setJMenuBar(lobby.getJMenuBar());
                 mainFrame.revalidate();
                 mainFrame.repaint();
